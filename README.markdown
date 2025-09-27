@@ -88,6 +88,5 @@ This Telegram bot acts as a scriptwriting assistant inspired by Christopher Nola
 - Integrate title generation.
 - Support multi-user collaboration.
 
-## 📝 Contributing
-
-Fork and PR improvements!
+---
+Built by Mark Tsyrul, it was the final project of the third part of Yandex Course
