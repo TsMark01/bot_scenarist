@@ -3,9 +3,8 @@ from database import *
 from tokens import cut_tokens
 from info import *
 
-
-
 def post_request(messages):
+    """Send a POST request to Yandex GPT for completion."""
     url = 'https://llm.api.cloud.yandex.net/foundationModels/v1/completion'
     headers = {
         'Authorization': f'Bearer {iam}',
@@ -20,41 +19,44 @@ def post_request(messages):
         },
         'messages': messages
     }
-
-    response = requests.post(url, headers=headers, json=data)
-
-    if response.status_code == 200:
-        text = response.json()['result']['alternatives'][0]['message']['text']
-        return text
-    else:
-        error_message = response.text
-        logging.error(f'Ошибка GPT - {error_message}')
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        if response.status_code == 200:
+            text = response.json()['result']['alternatives'][0]['message']['text']
+            return text
+        else:
+            error_message = response.text
+            logging.error(f'GPT error - {error_message}')
+            return False
+    except Exception as e:
+        logging.error(f"Error in GPT request: {e}")
         return False
 
-
 SYSTEM_PROMPT = (
-    'Ты постепенно пишешь историю. Если человек просит, продолжаешь уже написанное. '
-    'Если это уместно, ты можешь добавлять в историю диалог между персонажами. '
-    'Диалоги пиши с новой строки и отделяй тире. '
-    'Не пиши никакого пояснительного текста в начале, а просто логично продолжай историю.'
+    "You gradually write the story. If the person asks, continue the already written one. "
+    "If appropriate, you can add dialogue between characters to the story. "
+    "Write dialogues on a new line and separate with a dash. "
+    "Do not write any explanatory text at the beginning, just logically continue the story."
 )
-START_STORY = '\nНапиши начало истории. Не пиши никакой пояснительный текст от себя'
-CONTINUE_STORY = '\nПродолжи сюжет в 1-3 предложения и оставь интригу. Не пиши никакой пояснительный текст от себя'
-END_STORY = '\nНапиши завершение истории c неожиданной развязкой. Не пиши никакой пояснительный текст от себя'
-
+START_STORY = '\nWrite the beginning of the story. Do not write any explanatory text from yourself.'
+CONTINUE_STORY = '\nContinue the plot in 1-3 sentences and leave an intrigue. Do not write any explanatory text from yourself.'
+END_STORY = '\nWrite the ending of the story with an unexpected twist. Do not write any explanatory text from yourself.'
 
 def create_system_prompt(user_id):
+    """Create a system prompt based on user story settings."""
     prompt = SYSTEM_PROMPT
     user_data = get_story_settings(user_id)
-    prompt += (f'\nНПиши историю в стиле {user_data[0][0]} с главным героем {user_data[0][1]}. '
-               f'Вот начальная локация: \n{user_data[0][2]}.\n')
+    prompt += (
+        f'\nWrite the story in the style of {user_data[0][0]} with the main character {user_data[0][1]}. '
+        f'Here is the initial location: \n{user_data[0][2]}.\n'
+    )
     if user_data[0][3]:
-        prompt += f'Также пользователь попросил учесть следующую дополнительную информацию: {user_data[0][3]} '
-    prompt += 'Не пиши никакие подсказки пользователю, что делать дальше. Он сам знает'
+        prompt += f'Also, the user asked to consider the following additional information: {user_data[0][3]} '
+    prompt += 'Do not write any hints to the user on what to do next. They know themselves.'
     return prompt
 
-
 def ask_gpt(user_id, mode):
+    """Ask Yandex GPT to generate story text based on mode."""
     system_prompt = create_system_prompt(user_id)
     messages = []
     if mode == 'start':
