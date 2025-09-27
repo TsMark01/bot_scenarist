@@ -1,11 +1,13 @@
 from telebot import types
 from info import *
-genres = ['Комедия', 'Фэнтези', 'Хоррор']
-main_characters = ['Гарри Поттер', 'Чёрная вдова', 'Капитан Джек Воробей']
-settings = ['Мегаполис', 'Деревня', 'Тёмный лес']
+
+genres = ['Comedy', 'Fantasy', 'Horror']
+main_characters = ['Harry Potter', 'Black Widow', 'Captain Jack Sparrow']
+settings = ['Megapolis', 'Village', 'Dark Forest']
 
 markup_ec = types.ReplyKeyboardMarkup(row_width=3, resize_keyboard=True)
 markup_ec.add("/continue", "/end")
+
 hideKeyboard = types.ReplyKeyboardRemove()
 
 markup_menu = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
@@ -30,7 +32,7 @@ markup_start = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
 markup_start.add("/generate")
 
 markup_generate = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
-markup_generate.add('Конец')
+markup_generate.add('End')
 
 markup_limit = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
 markup_limit.add("/tokens", "/help")
