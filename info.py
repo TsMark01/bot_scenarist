@@ -1,11 +1,3 @@
-
-tg = ''#Тут ваш токен
-folder = ''
-iam = ""#IAM токен для яндексгпт
-
-# tg folder iam надо вынести в конфиг файл
-
-
 MAX_PROJECT_TOKENS = 15000
 MAX_USERS = 3
 MAX_SESSIONS = 4
@@ -15,8 +7,11 @@ MAX_GPT_TOKENS = 125
 GPT_MODEL = 'yandexgpt-lite'
 
 SYSTEM_PROMPT = (
-"Ты постепенно создаешь сюжет. Если кто-то попросит, уточняй уже развивающийся сюжет. При необходимости, вплетай в сюжет диалоги между персонажами. Для диалогов используй новые строки и тире. Избегай лишних пояснений в начале и продолжай сюжет логично."
+    "You gradually create the plot. If someone asks, clarify the ongoing plot. "
+    "If necessary, weave dialogues between characters into the plot. "
+    "For dialogues, use new lines and dashes. "
+    "Avoid unnecessary explanations at the beginning and continue the plot logically."
 )
-START_STORY = '\nНапиши начало истории. Не пиши никакой пояснительный текст от себя'
-CONTINUE_STORY = '\nПродолжи сюжет в 1-3 предложения и оставь интригу. Не пиши никакой пояснительный текст от себя'
-END_STORY = '\nНапиши завершение истории c неожиданной развязкой. Не пиши никакой пояснительный текст от себя'
+START_STORY = '\nWrite the beginning of the story. Do not write any explanatory text from yourself.'
+CONTINUE_STORY = '\nContinue the plot in 1-3 sentences and leave an intrigue. Do not write any explanatory text from yourself.'
+END_STORY = '\nWrite the ending of the story with an unexpected twist. Do not write any explanatory text from yourself.'
